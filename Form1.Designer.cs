@@ -34,6 +34,7 @@
             btnExcluir = new Button();
             listBoxTarefas = new ListBox();
             txtDescricao = new TextBox();
+            btnConcluir = new Button();
             SuspendLayout();
             // 
             // txtTitulo
@@ -46,27 +47,27 @@
             // 
             // btnAdicionar
             // 
-            btnAdicionar.Location = new Point(52, 89);
+            btnAdicionar.Location = new Point(19, 91);
             btnAdicionar.Name = "btnAdicionar";
-            btnAdicionar.Size = new Size(75, 23);
+            btnAdicionar.Size = new Size(68, 23);
             btnAdicionar.TabIndex = 1;
             btnAdicionar.Text = "Adicionar";
             btnAdicionar.UseVisualStyleBackColor = true;
             // 
             // btnEditar
             // 
-            btnEditar.Location = new Point(133, 89);
+            btnEditar.Location = new Point(100, 91);
             btnEditar.Name = "btnEditar";
-            btnEditar.Size = new Size(75, 23);
+            btnEditar.Size = new Size(68, 23);
             btnEditar.TabIndex = 2;
             btnEditar.Text = "Editar";
             btnEditar.UseVisualStyleBackColor = true;
             // 
             // btnExcluir
             // 
-            btnExcluir.Location = new Point(214, 89);
+            btnExcluir.Location = new Point(181, 91);
             btnExcluir.Name = "btnExcluir";
-            btnExcluir.Size = new Size(75, 23);
+            btnExcluir.Size = new Size(68, 23);
             btnExcluir.TabIndex = 3;
             btnExcluir.Text = "Excluir";
             btnExcluir.UseVisualStyleBackColor = true;
@@ -88,11 +89,21 @@
             txtDescricao.Size = new Size(306, 23);
             txtDescricao.TabIndex = 5;
             // 
+            // btnConcluir
+            // 
+            btnConcluir.Location = new Point(262, 91);
+            btnConcluir.Name = "btnConcluir";
+            btnConcluir.Size = new Size(68, 23);
+            btnConcluir.TabIndex = 6;
+            btnConcluir.Text = "Concluir";
+            btnConcluir.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(btnConcluir);
             Controls.Add(txtDescricao);
             Controls.Add(listBoxTarefas);
             Controls.Add(btnExcluir);
@@ -113,5 +124,6 @@
         private Button btnExcluir;
         private ListBox listBoxTarefas;
         private TextBox txtDescricao;
+        private Button btnConcluir;
     }
 }
