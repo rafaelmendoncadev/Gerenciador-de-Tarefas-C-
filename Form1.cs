@@ -25,13 +25,16 @@ namespace Gerenciador_de_Tarefas
             using (var conn = new OleDbConnection(connectionString))
             {
                 conn.Open();
-                var cmd = new OleDbCommand("SELECT Id, Titulo, Concluida FROM Tarefas", conn);
+                var cmd = new OleDbCommand("SELECT Id, Titulo, Concluida, DataConclusao FROM Tarefas", conn);
                 using (var reader = cmd.ExecuteReader())
                 {
                     while (reader.Read())
                     {
                         string status = Convert.ToBoolean(reader["Concluida"]) ? "Concluída" : "Pendente";
-                        listBoxTarefas.Items.Add($"{reader["Id"]} - {reader["Titulo"]} ({status})");
+                        string dataConclusao = reader["DataConclusao"] != DBNull.Value
+                            ? $" - {Convert.ToDateTime(reader["DataConclusao"]).ToShortDateString()}"
+                            : "";
+                        listBoxTarefas.Items.Add($"{reader["Id"]} - {reader["Titulo"]} ({status}{dataConclusao})");
                     }
                 }
             }
@@ -124,14 +127,19 @@ namespace Gerenciador_de_Tarefas
             }
 
             var item = listBoxTarefas.SelectedItem.ToString();
-            int id = int.Parse(item.Split('-')[0].Trim());
+            if (!int.TryParse(item.Split('-')[0].Trim(), out int id))
+            {
+                MessageBox.Show("Id da tarefa inválido.");
+                return;
+            }
 
             using (var conn = new OleDbConnection(connectionString))
             {
                 conn.Open();
-                var cmd = new OleDbCommand("UPDATE Tarefas SET Concluida = ? WHERE Id = ?", conn);
-                cmd.Parameters.AddWithValue("?", true);
-                cmd.Parameters.AddWithValue("?", id);
+                var cmd = new OleDbCommand("UPDATE Tarefas SET Concluida = ?, DataConclusao = ? WHERE Id = ?", conn);
+                cmd.Parameters.AddWithValue("?", -1); // -1 para true no Access
+                cmd.Parameters.AddWithValue("?", DateTime.Now);
+                cmd.Parameters.AddWithValue("?", id); // id deve ser inteiro
                 cmd.ExecuteNonQuery();
             }
 
