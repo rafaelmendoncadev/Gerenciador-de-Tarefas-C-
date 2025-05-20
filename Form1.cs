@@ -34,7 +34,13 @@ namespace Gerenciador_de_Tarefas
                         string dataConclusao = reader["DataConclusao"] != DBNull.Value
                             ? $" - {Convert.ToDateTime(reader["DataConclusao"]).ToShortDateString()}"
                             : "";
-                        listBoxTarefas.Items.Add($"{reader["Id"]} - {reader["Titulo"]} ({status}{dataConclusao})");
+                        listBoxTarefas.Items.Add(new TarefaListBoxItem
+                        {
+                            Id = Convert.ToInt32(reader["Id"]),
+                            Titulo = reader["Titulo"].ToString(),
+                            Status = status,
+                            DataConclusao = dataConclusao
+                        });
                     }
                 }
             }
@@ -65,14 +71,13 @@ namespace Gerenciador_de_Tarefas
 
         private void BtnExcluir_Click(object sender, EventArgs e)
         {
-            if (listBoxTarefas.SelectedItem == null)
+            var item = listBoxTarefas.SelectedItem as TarefaListBoxItem;
+            if (item == null)
             {
                 MessageBox.Show("Selecione uma tarefa para excluir.");
                 return;
             }
-
-            var item = listBoxTarefas.SelectedItem.ToString();
-            int id = int.Parse(item.Split('-')[0].Trim());
+            int id = item.Id;
 
             using (var conn = new OleDbConnection(connectionString))
             {
@@ -101,8 +106,9 @@ namespace Gerenciador_de_Tarefas
                 return;
             }
 
-            var item = listBoxTarefas.SelectedItem.ToString();
-            int id = int.Parse(item.Split('-')[0].Trim());
+            var item = listBoxTarefas.SelectedItem as TarefaListBoxItem;
+            if (item == null) return;
+            int id = item.Id;
 
             using (var conn = new OleDbConnection(connectionString))
             {
@@ -126,12 +132,9 @@ namespace Gerenciador_de_Tarefas
                 return;
             }
 
-            var item = listBoxTarefas.SelectedItem.ToString();
-            if (!int.TryParse(item.Split('-')[0].Trim(), out int id))
-            {
-                MessageBox.Show("Id da tarefa inválido.");
-                return;
-            }
+            var item = listBoxTarefas.SelectedItem as TarefaListBoxItem;
+            if (item == null) return;
+            int id = item.Id;
 
             using (var conn = new OleDbConnection(connectionString))
             {
@@ -147,11 +150,11 @@ namespace Gerenciador_de_Tarefas
         }
         private void ListBoxTarefas_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (listBoxTarefas.SelectedItem == null)
+            var item = listBoxTarefas.SelectedItem as TarefaListBoxItem;
+            if (item == null)
                 return;
 
-            var item = listBoxTarefas.SelectedItem.ToString();
-            int id = int.Parse(item.Split('-')[0].Trim());
+            int id = item.Id;
 
             using (var conn = new OleDbConnection(connectionString))
             {
