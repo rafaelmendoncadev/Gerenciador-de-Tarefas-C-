@@ -1,5 +1,6 @@
 using System;
 using System.Data.OleDb;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace Gerenciador_de_Tarefas
@@ -17,6 +18,8 @@ namespace Gerenciador_de_Tarefas
             btnEditar.Click += BtnEditar_Click;
             btnConcluir.Click += BtnConcluir_Click;
             listBoxTarefas.SelectedIndexChanged += ListBoxTarefas_SelectedIndexChanged;
+            listBoxTarefas.DrawItem += ListBoxTarefas_DrawItem;
+            listBoxTarefas.DrawMode = DrawMode.OwnerDrawFixed;
         }
 
         private void CarregarTarefas()
@@ -170,6 +173,41 @@ namespace Gerenciador_de_Tarefas
                     }
                 }
             }
+        }
+
+        private void ListBoxTarefas_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            if (e.Index < 0) return;
+
+            var item = listBoxTarefas.Items[e.Index] as TarefaListBoxItem;
+            if (item == null) return;
+
+            // Monta o texto: título | (status data)
+            string titulo = item.Titulo;
+            string statusData = $" ({item.Status}{item.DataConclusao})";
+
+            // Define as cores de fundo e texto conforme seleção
+            e.DrawBackground();
+            Color textColor = (e.State & DrawItemState.Selected) == DrawItemState.Selected
+                ? SystemColors.HighlightText
+                : listBoxTarefas.ForeColor;
+
+            // Fonte riscada para título se concluída
+            Font fontTitulo = item.Status == "Concluída"
+                ? new Font(e.Font, FontStyle.Strikeout)
+                : e.Font;
+
+            // Calcula o tamanho do título para posicionar o status/data corretamente
+            var g = e.Graphics;
+            SizeF sizeTitulo = g.MeasureString(titulo, fontTitulo);
+
+            // Desenha o título
+            g.DrawString(titulo, fontTitulo, new SolidBrush(textColor), e.Bounds.Left, e.Bounds.Top);
+
+            // Desenha o status/data ao lado do título, sem riscar
+            g.DrawString(statusData, e.Font, new SolidBrush(textColor), e.Bounds.Left + sizeTitulo.Width - 5, e.Bounds.Top);
+
+            e.DrawFocusRectangle();
         }
     }
 }
