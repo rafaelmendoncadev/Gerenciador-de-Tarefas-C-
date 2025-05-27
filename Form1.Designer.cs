@@ -61,6 +61,7 @@
             btnAdicionar.TabIndex = 1;
             btnAdicionar.Text = "Adicionar";
             btnAdicionar.UseVisualStyleBackColor = false;
+            btnAdicionar.Click += btnAdicionar_Click_1;
             // 
             // btnEditar
             // 
@@ -91,6 +92,7 @@
             listBoxTarefas.Name = "listBoxTarefas";
             listBoxTarefas.Size = new Size(306, 184);
             listBoxTarefas.TabIndex = 4;
+            listBoxTarefas.SelectedIndexChanged += listBoxTarefas_SelectedIndexChanged_1;
             // 
             // txtDescricao
             // 
@@ -110,6 +112,7 @@
             btnConcluir.TabIndex = 6;
             btnConcluir.Text = "Concluir";
             btnConcluir.UseVisualStyleBackColor = false;
+            btnConcluir.Click += btnConcluir_Click_1;
             // 
             // label1
             // 

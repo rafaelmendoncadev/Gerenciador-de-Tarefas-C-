@@ -7,7 +7,6 @@
 
     public override string ToString()
     {
-        // Exibe apenas o título, status e data de conclusão (sem o ID)
         return $"{Titulo} ({Status}{DataConclusao})";
     }
 }
