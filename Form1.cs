@@ -38,15 +38,13 @@ namespace Gerenciador_de_Tarefas
                     while (reader.Read())
                     {
                         string status = Convert.ToBoolean(reader["Concluida"]) ? "Concluída" : "Pendente";
-                        string dataConclusao = reader["DataConclusao"] != DBNull.Value
-                            ? $" - {Convert.ToDateTime(reader["DataConclusao"]).ToShortDateString()}"
-                            : "";
+                      
                         listBoxTarefas.Items.Add(new TarefaListBoxItem
                         {
                             Id = Convert.ToInt32(reader["Id"]),
                             Titulo = reader["Titulo"].ToString(),
                             Status = status,
-                            DataConclusao = dataConclusao
+                         
                         });
                     }
                 }
